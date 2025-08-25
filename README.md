@@ -61,8 +61,16 @@ Metrics: Accuracy, Precision, Recall, AUC.
 Results
 
 Test Accuracy: ~92% (varies by run).
-AUC: ~0.95.
-Visualizations: Confusion matrix, ROC curve, training history plots.
+AUC: ~0.98.
+
+              precision    recall  f1-score   support
+
+        real       0.93      0.94      0.93      3150
+        fake       0.94      0.93      0.93      3150
+
+    accuracy                           0.93      6300
+   macro avg       0.93      0.93      0.93      6300
+weighted avg       0.93      0.93      0.93      6300
 
 Limitations
 
