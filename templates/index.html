@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Deepfake Image Detection</h1>
+            <p class="subtitle">Upload an image to analyze if it's a deepfake</p>
+        </header>
+
+        <form method="POST" enctype="multipart/form-data" id="upload-form">
+            <div class="upload-box">
+                <input type="file" name="file" id="file" accept=".jpg,.jpeg,.png" required>
+                <label for="file" class="upload-label">
+                    <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <span>Choose an image or drag & drop here</span>
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary" id="analyze-btn">Analyze Image</button>
+        </form>
+
+        <div class="loading" id="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Analyzing your image...</p>
+        </div>
+
+        {% if result %}
+        <div class="result-box">
+            <h2>Analysis Result</h2>
+            <p class="result-text">Status: <span class="result-{{ result.lower() }}">{{ result }}</span></p>
+            <p>Confidence: {{ confidence }}%</p>
+            {% if filename %}
+            <div class="image-preview">
+                <img src="{{ url_for('static', filename='uploads/' + filename) }}" alt="Uploaded Image">
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="error-box">
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', function() {
+            document.getElementById('loading').style.display = 'flex';
+            document.getElementById('analyze-btn').disabled = true;
+        });
+
+        document.getElementById('file').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || 'Choose an image...';
+            document.querySelector('.upload-label span').textContent = fileName;
+        });
+    </script>
+</body>
+</html>
